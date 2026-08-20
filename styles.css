@@ -461,3 +461,110 @@ footer {
   .nav-links { display: none; }
   .job-head { flex-direction: column; }
 }
+
+/* ============================================================
+   Motion
+   ============================================================ */
+
+/* hero entrance: each element fades + rises in staggered by --d */
+.hero-fade {
+  opacity: 0;
+  transform: translateY(16px);
+  animation: heroFadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--d, 0s);
+}
+
+@keyframes heroFadeIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* scroll reveal for section blocks */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.reveal-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* stagger skill-group and job cards slightly via nth-child */
+.skill-groups .skill-group.reveal:nth-child(1) { transition-delay: 0s; }
+.skill-groups .skill-group.reveal:nth-child(2) { transition-delay: 0.06s; }
+.skill-groups .skill-group.reveal:nth-child(3) { transition-delay: 0.12s; }
+.skill-groups .skill-group.reveal:nth-child(4) { transition-delay: 0.18s; }
+.skill-groups .skill-group.reveal:nth-child(5) { transition-delay: 0.24s; }
+.skill-groups .skill-group.reveal:nth-child(6) { transition-delay: 0.3s; }
+
+/* hero precision mark: slow ambient pulse, feels alive without distracting */
+.hero-mark .ring-active {
+  transform-origin: 300px 240px;
+  animation: ringPulse 3.2s ease-in-out infinite;
+}
+
+.hero-mark .center-dot {
+  transform-origin: 300px 240px;
+  animation: dotPulse 3.2s ease-in-out infinite;
+}
+
+.hero-mark .ring-1 { animation: ringDrift 9s ease-in-out infinite; transform-origin: 300px 240px; }
+.hero-mark .ring-2 { animation: ringDrift 12s ease-in-out infinite reverse; transform-origin: 300px 240px; }
+.hero-mark .ring-3 { animation: ringDrift 15s ease-in-out infinite; transform-origin: 300px 240px; }
+
+@keyframes ringPulse {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 0.4; }
+}
+
+@keyframes dotPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.5); }
+}
+
+@keyframes ringDrift {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(3deg); }
+}
+
+/* active nav link */
+.nav-links a { position: relative; transition: color 0.2s; }
+.nav-links a.active { color: var(--accent-bright); }
+.nav-links a.active::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -22px;
+  height: 2px;
+  background: var(--accent-bright);
+}
+
+/* metric numbers: monospace-ish tabular feel while counting */
+.metric-num { font-variant-numeric: tabular-nums; }
+
+/* card + chip hover motion, subtle lift */
+.card, .skill-group, .metric-card {
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+.card:hover, .skill-group:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+}
+
+.chip { transition: border-color 0.2s ease, color 0.2s ease; }
+.chip:hover { border-color: var(--accent); color: var(--accent-bright); }
+
+.job::before { transition: transform 0.3s ease, background 0.3s ease; }
+.job.reveal-in::before { background: var(--accent-bright); }
+
+/* respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .hero-fade, .reveal, .hero-mark .ring-active, .hero-mark .center-dot,
+  .hero-mark .ring-1, .hero-mark .ring-2, .hero-mark .ring-3 {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
